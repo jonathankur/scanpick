@@ -74,13 +74,18 @@ var HomePage = (function () {
         this.myBar = '';
         this.myLocs = '';
         this.myID = 0;
+        this.newLoc = '';
         this.myMessage = '';
         this.myID = 0;
+        this.newLoc = '';
     }
     HomePage.prototype.recalc = function () {
     };
     HomePage.prototype.ionViewDidEnter = function () {
         this.recalc();
+    };
+    HomePage.prototype.addChar = function (a) {
+        this.newLoc = "" + this.newLoc + a;
     };
     HomePage.prototype.doScan = function () {
         var _this = this;
@@ -91,11 +96,11 @@ var HomePage = (function () {
         }, function (err) {
         });
     };
-    HomePage.prototype.scanBar = function () {
+    HomePage.prototype.scanLoc = function () {
         var _this = this;
         this.barcodeScanner.scan().then(function (barcodeData) {
             if (!barcodeData.cancelled) {
-                _this.setBar(barcodeData.text);
+                _this.updateLoc(barcodeData.text);
             }
         }, function (err) {
         });
@@ -119,6 +124,7 @@ var HomePage = (function () {
                     that.myBar = data.barcode;
                     that.myLocs = data.locs;
                     that.myID = data.id;
+                    that.newLoc = '';
                 }
             });
         }, function (err) {
@@ -126,14 +132,14 @@ var HomePage = (function () {
             _this.connect.logError(err);
         });
     };
-    HomePage.prototype.setBar = function (s) {
+    HomePage.prototype.updateLoc = function (s) {
         var _this = this;
         var that = this;
         var loader = this.loadingCtrl.create({
             content: "Updating..."
         });
         loader.present();
-        var url = 'spsetbar.php?code=' + s + '&id=' + this.myID;
+        var url = 'spsetloc.php?code=' + s + '&id=' + this.myID;
         console.log(url);
         this.connect.getList(url).subscribe(function (data) {
             loader.dismiss();
@@ -148,11 +154,17 @@ var HomePage = (function () {
     HomePage.prototype.goBack = function () {
         this.myMode = 0;
     };
+    HomePage.prototype.enterLoc = function () {
+        this.myMode = 2;
+    };
+    HomePage.prototype.saveLoc = function () {
+        this.updateLoc(this.newLoc);
+    };
     return HomePage;
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Scan Pick App\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n<ion-item padding [innerHTML]="myMessage">\n</ion-item>\n<div *ngIf = "myMode == 0">\n <button ion-button color="primary" block (click)="doScan()">Scan product</button>\n</div>\n<div *ngIf = "myMode == 1">\n<ion-grid no-padding>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>SKU</ion-label>\n						<ion-input type="text" [(ngModel)]="mySKU" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Product Name</ion-label>\n						<ion-input type="text" [(ngModel)]="myName" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Locations</ion-label>\n						<ion-input type="text" [(ngModel)]="myLocs" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Barcode</ion-label>\n						<ion-input type="text" [(ngModel)]="myBar" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="primary" block (click)="scanBar()">Scan Barcode</button>\n</ion-col>\n</ion-row>\n\n<ion-row>\n<ion-col col-12>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n\n</ion-grid>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/,
+        selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Scan Pick App\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n<div *ngIf = "myMode == 0" style="padding-top:50px"> \n\n <button ion-button color="primary" block (click)="doScan()">Scan product</button>\n</div>\n<div *ngIf = "myMode == 1">\n<ion-grid no-padding>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>SKU</ion-label>\n						<ion-input type="text" [(ngModel)]="mySKU" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Product Name</ion-label>\n						<ion-input type="text" [(ngModel)]="myName" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Locations</ion-label>\n						<ion-input type="text" [(ngModel)]="myLocs" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Barcode</ion-label>\n						<ion-input type="text" [(ngModel)]="myBar" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="primary" block (click)="scanLoc()">Scan Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="secondary" block (click)="enterLoc()">Enter Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n</ion-grid>\n</div>\n<div *ngIf="myMode == 2">\n<ion-grid>\n<ion-row>\n<ion-col>\n					<ion-item>\n						<ion-label stacked>New Location</ion-label>\n						<ion-input type="text" [(ngModel)]="newLoc"></ion-input>\n					</ion-item>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-6>\n<button ion-button color="secondary" block (click)="saveLoc()">Enter</button>\n</ion-col>\n<ion-col col-6>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-1> \n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'1\')">1</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'2\')">2</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'3\')">3</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'4\')">4</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'5\')">5</button>\n</ion-col>\n<ion-col col-1> \n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-1> \n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'6\')">6</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'7\')">7</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'8\')">8</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'9\')">9</button>\n</ion-col>\n<ion-col col-2>\n</ion-col>\n<ion-col col-1> \n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-1> \n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'A\')">A</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'B\')">B</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'C\')">C</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'D\')">D</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'E\')">E</button>\n</ion-col>\n<ion-col col-1> \n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-1> \n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'F\')">F</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'G\')">G</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'H\')">H</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'I\')">I</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click="addchar(\'J\')">J</button>\n</ion-col>\n<ion-col col-1> \n</ion-col>\n</ion-row>\n</ion-grid>	\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
 ], HomePage);
