@@ -1,4 +1,4 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
 /***/ 107:
 /***/ (function(module, exports) {
@@ -18,19 +18,27 @@ webpackEmptyAsyncContext.id = 107;
 /***/ }),
 
 /***/ 149:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncatched exception popping up in devtools
-	return Promise.resolve().then(function() {
-		throw new Error("Cannot find module '" + req + "'.");
+var map = {
+	"../pages/menu/menu.module": [
+		265,
+		0
+	]
+};
+function webpackAsyncContext(req) {
+	var ids = map[req];
+	if(!ids)
+		return Promise.reject(new Error("Cannot find module '" + req + "'."));
+	return __webpack_require__.e(ids[1]).then(function() {
+		return __webpack_require__(ids[0]);
 	});
-}
-webpackEmptyAsyncContext.keys = function() { return []; };
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 149;
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = 149;
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -40,7 +48,7 @@ webpackEmptyAsyncContext.id = 149;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(193);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -75,6 +83,7 @@ var HomePage = (function () {
         this.myLocs = '';
         this.myID = 0;
         this.newLoc = '';
+        this.repmode = false;
         this.myMessage = '';
         this.myID = 0;
         this.newLoc = '';
@@ -142,7 +151,7 @@ var HomePage = (function () {
             content: "Updating..."
         });
         loader.present();
-        var url = 'spsetloc.php?code=' + s + '&id=' + this.myID;
+        var url = 'spsetloc.php?code=' + s + '&id=' + this.myID + '&repmode=' + this.repmode;
         console.log(url);
         this.connect.getList(url).subscribe(function (data) {
             loader.dismiss();
@@ -167,12 +176,11 @@ var HomePage = (function () {
 }());
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Scan Pick App\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n<div *ngIf = "myMode == 0" style="padding-top:50px"> \n\n <button ion-button color="primary" block (click)="doScan()">Scan product</button>\n\n<button ion-button color="danger" block (click)="fake()">Test</button>\n</div>\n<div *ngIf = "myMode == 1">\n<ion-grid no-padding>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>SKU</ion-label>\n						<ion-input type="text" [(ngModel)]="mySKU" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Product Name</ion-label>\n						<ion-input type="text" [(ngModel)]="myName" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Locations</ion-label>\n						<ion-input type="text" [(ngModel)]="myLocs" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Barcode</ion-label>\n						<ion-input type="text" [(ngModel)]="myBar" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="primary" block (click)="scanLoc()">Scan Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="secondary" block (click)="enterLoc()">Enter Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n</ion-grid>\n</div>\n<div *ngIf="myMode == 2">\n<ion-grid>\n<ion-row>\n<ion-col>\n					<ion-item>\n						<ion-label stacked>New Location</ion-label>\n						<ion-input type="text" [(ngModel)]="newLoc"></ion-input>\n					</ion-item>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-6>\n<button ion-button color="secondary" block (click)="saveLoc()">Enter</button>\n</ion-col>\n<ion-col col-6>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'A\')">A</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'B\')">B</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'C\')">C</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'D\')">D</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'E\')">E</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'F\')">F</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'G\')">G</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'H\')">H</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'I\')">I</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'J\')">J</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'K\')">K</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'L\')">L</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'M\')">M</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'N\')">N</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'O\')">O</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'P\')">P</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Q\')">Q</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'R\')">R</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'S\')">S</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'T\')">T</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'U\')">U</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'V\')">V</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'W\')">W</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'X\')">X</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Y\')">Y</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Z\')">Z</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'1\')">1</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'2\')">2</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'3\')">3</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'4\')">4</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'5\')">5</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'6\')">6</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'7\')">7</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'8\')">8</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'9\')">9</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'0\')">0</button>\n</ion-col>\n\n</ion-row>\n\n</ion-grid>	\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/,
+        selector: 'page-home',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Scan Pick App\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n<div *ngIf = "myMode == 0" style="padding-top:50px"> \n\n <button ion-button color="primary" block (click)="doScan()">Scan product</button>\n\n<!-- <button ion-button color="danger" block (click)="fake()">Test</button>   -->\n\n</div>\n<div *ngIf = "myMode == 1">\n<ion-grid no-padding>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>SKU</ion-label>\n						<ion-input type="text" [(ngModel)]="mySKU" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Product Name</ion-label>\n						<ion-input type="text" [(ngModel)]="myName" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Locations</ion-label>\n						<ion-input type="text" [(ngModel)]="myLocs" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n			<ion-row>\n				<ion-col>\n					<ion-item>\n						<ion-label stacked>Barcode</ion-label>\n						<ion-input type="text" [(ngModel)]="myBar" readonly></ion-input>\n					</ion-item>\n				</ion-col>\n			</ion-row>\n<ion-row>\n <ion-col col-12>\n  <ion-item>\n    <ion-label>Replace Mode</ion-label>\n    <ion-toggle [(ngModel)]="repmode" checked="false"></ion-toggle>\n  </ion-item>\n </ion-col>\n</ion-row>\n\n<ion-row>\n<ion-col col-12>\n <button ion-button color="primary" block (click)="scanLoc()">Scan Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button color="secondary" block (click)="enterLoc()">Enter Location</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n</ion-grid>\n</div>\n<div *ngIf="myMode == 2">\n<ion-grid>\n<ion-row>\n<ion-col>\n					<ion-item>\n						<ion-label stacked>New Location</ion-label>\n						<ion-input type="text" [(ngModel)]="newLoc"></ion-input>\n					</ion-item>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-6>\n<button ion-button color="secondary" block (click)="saveLoc()">Enter</button>\n</ion-col>\n<ion-col col-6>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'A\')">A</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'B\')">B</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'C\')">C</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'D\')">D</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'E\')">E</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'F\')">F</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'G\')">G</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'H\')">H</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'I\')">I</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'J\')">J</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'K\')">K</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'L\')">L</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'M\')">M</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'N\')">N</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'O\')">O</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'P\')">P</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Q\')">Q</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'R\')">R</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'S\')">S</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'T\')">T</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'U\')">U</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'V\')">V</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'W\')">W</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'X\')">X</button>\n</ion-col>\n</ion-row>\n\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Y\')">Y</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'Z\')">Z</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'1\')">1</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'2\')">2</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'3\')">3</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'4\')">4</button>\n</ion-col>\n</ion-row>\n<ion-row no-lines>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'5\')">5</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'6\')">6</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'7\')">7</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'8\')">8</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'9\')">9</button>\n</ion-col>\n<ion-col col-2>\n<button ion-button (click)="addchar(\'0\')">0</button>\n</ion-col>\n\n</ion-row>\n\n</ion-grid>	\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/home/home.html"*/,
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* MenuController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _j || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
 ], HomePage);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=home.js.map
 
 /***/ }),
@@ -247,7 +255,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__(192);
@@ -285,7 +293,11 @@ AppModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* MyApp */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* MyApp */], {}, {
+                links: [
+                    { loadChildren: '../pages/menu/menu.module#MenuPageModule', name: 'MenuPage', segment: 'menu', priority: 'low', defaultHistory: [] }
+                ]
+            })
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
         entryComponents: [
@@ -312,7 +324,7 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(189);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(194);
@@ -345,7 +357,7 @@ var MyApp = (function () {
 MyApp = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/app/app.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
 ], MyApp);
 
 //# sourceMappingURL=app.component.js.map
