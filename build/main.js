@@ -435,7 +435,7 @@ var PhotosPage = (function () {
     };
     PhotosPage.prototype.takePic = function () {
         var _this = this;
-        this.camera.getPicture({ quality: 80, targetWidth: 400, targetHeight: 400, cameraDirection: 1, correctOrientation: true, destinationType: 1, allowEdit: true }).then(function (imagePath) {
+        this.camera.getPicture({ quality: 80, targetWidth: 400, targetHeight: 400, cameraDirection: 0, correctOrientation: true, destinationType: 1, allowEdit: true }).then(function (imagePath) {
             _this.zone.run(function () { _this.uploadImage(imagePath); });
         }, function (err) {
         });
@@ -473,6 +473,7 @@ var PhotosPage = (function () {
         var url = this.connect.getServerUrl() + 'upload.php';
         // File for Upload
         var targetPath = imagePath;
+        this.picsource = targetPath;
         // File name only
         var filename = imagePath.substr(imagePath.lastIndexOf('/') + 1);
         var options = {
@@ -502,7 +503,7 @@ var PhotosPage = (function () {
 }());
 PhotosPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-photos',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/photos/photos.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Take Photos</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div *ngIf="mymode==0">\n<ion-list>\n <ion-item>\n    <ion-label stacked>Reference Notes</ion-label>\n    <ion-input type="text" [(ngModel)]="notes"></ion-input>\n  </ion-item>\n</ion-list>\n<ion-grid>\n<ion-row *ngIf="phlist.length">\n<ion-col col-12>\n <button ion-button block color="secondary" (click)="sendCust()">Send to Customer</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button block color="primary" (click)="takePic()">Take a Photo</button>\n</ion-col>\n</ion-row>\n</ion-grid>\n<ion-list *ngIf="phlist.length">\n  			<ion-item-sliding *ngFor="let p of phlist" >\n<button ion-item detail-none >\n					<img [src]="p.pic" width="150">\n				</button>\n				<ion-item-options side="right">\n					<button ion-button color="danger" (click)="delPhoto(p.id)"><ion-icon name="ios-information-circle"></ion-icon>Delete</button>\n				</ion-item-options>\n			</ion-item-sliding>\n</ion-list>\n</div>\n<div *ngIf="mymode > 0">\n<ion-list>\n  			<ion-item *ngFor="let a of addresses">\n<button ion-button block (click) = "sendIt(a)" >{{ a.email }}</button>\n			</ion-item>\n</ion-list>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/photos/photos.html"*/,
+        selector: 'page-photos',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/photos/photos.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Take Photos</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div *ngIf="mymode==0">\n<ion-list>\n <ion-item>\n    <ion-label stacked>Reference Notes</ion-label>\n    <ion-input type="text" [(ngModel)]="notes"></ion-input>\n  </ion-item>\n</ion-list>\n<ion-grid>\n<ion-row *ngIf="phlist.length">\n<ion-col col-12>\n <button ion-button block color="secondary" (click)="sendCust()">Send to Customer</button>\n</ion-col>\n</ion-row>\n<ion-row>\n<ion-col col-12>\n <button ion-button block color="primary" (click)="takePic()">Take a Photo</button>\n</ion-col>\n</ion-row>\n</ion-grid>\n<ion-list *ngIf="phlist.length">\n  			<ion-item-sliding *ngFor="let p of phlist" >\n<button ion-item detail-none >\n					<img [src]="p.pic" width="150">\n				</button>\n				<ion-item-options side="right">\n					<button ion-button color="danger" (click)="delPhoto(p.id)"><ion-icon name="ios-information-circle"></ion-icon>Delete</button>\n				</ion-item-options>\n			</ion-item-sliding>\n</ion-list>\n</div>\n<img [src]="picsource">\n<div *ngIf="mymode > 0">\n<ion-list>\n  			<ion-item *ngFor="let a of addresses">\n<button ion-button block (click) = "sendIt(a)" >{{ a.email }}</button>\n			</ion-item>\n</ion-list>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/photos/photos.html"*/,
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* NavParams */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__["a" /* Camera */], __WEBPACK_IMPORTED_MODULE_4__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__["a" /* FileTransfer */]])
 ], PhotosPage);
