@@ -470,9 +470,7 @@ var PhotosPage = (function () {
     };
     PhotosPage.prototype.uploadImage = function (imagePath) {
         // Destination URL
-        alert(imagePath);
         var url = this.connect.getServerUrl() + 'upload.php';
-        alert(url);
         // File for Upload
         var targetPath = imagePath;
         // File name only
@@ -484,9 +482,8 @@ var PhotosPage = (function () {
             mimeType: "multipart/form-data",
             params: {}
         };
-        alert('got here');
+        alert(JSON.stringify(options));
         var fileTransfer = this.transfer.create();
-        alert('here2');
         var loader = this.loadingCtrl.create({
             content: 'Uploading...',
         });
@@ -496,6 +493,8 @@ var PhotosPage = (function () {
             alert(JSON.stringify(data));
             loader.dismiss();
         }, function (err) {
+            alert('oops');
+            alert(JSON.stringify(err));
             loader.dismiss();
         });
     };
