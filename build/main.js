@@ -555,7 +555,7 @@ var PhotosPage = (function () {
     };
     PhotosPage.prototype.takePic = function () {
         var _this = this;
-        this.camera.getPicture({ quality: 80, targetWidth: 800, targetHeight: 1000, cameraDirection: 0, correctOrientation: true, destinationType: 1, allowEdit: true }).then(function (imagePath) {
+        this.camera.getPicture({ quality: 80, targetWidth: 800, targetHeight: 1000, cameraDirection: 0, correctOrientation: true, destinationType: 1, allowEdit: false }).then(function (imagePath) {
             _this.zone.run(function () { _this.uploadImage(imagePath); });
         }, function (err) {
         });
