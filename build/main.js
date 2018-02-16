@@ -40,11 +40,11 @@ webpackEmptyAsyncContext.id = 151;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pick_pick__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stock_stock__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__photos_photos__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stock_stock__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__photos_photos__ = __webpack_require__(203);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -104,8 +104,9 @@ MenuPage = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PickPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__picker_picker__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -118,7 +119,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-// import { PickerPage } from '../picker/picker';
+
 var PickPage = (function () {
     function PickPage(navCtrl, navParams, connect, zone, cdr) {
         this.navCtrl = navCtrl;
@@ -132,7 +133,7 @@ var PickPage = (function () {
         this.company = 0;
         this.companyname = "";
     }
-    PickPage.prototype.ionViewDidLoad = function () {
+    PickPage.prototype.ionViewDidEnter = function () {
         this.refresh();
     };
     PickPage.prototype.refresh = function () {
@@ -165,7 +166,7 @@ var PickPage = (function () {
         this.company = 0;
     };
     PickPage.prototype.goOrd = function (o) {
-        //     this.navCtrl.push ( StockpPage, { 'orderno' : o.id });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__picker_picker__["a" /* PickerPage */], { 'orderno': o.id });
     };
     return PickPage;
 }());
@@ -184,11 +185,183 @@ PickPage = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PickerPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+/**
+ * Generated class for the StockpPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var PickerPage = (function () {
+    function PickerPage(navCtrl, navParams, connect, loadingCtrl, zone, alertCtrl, cdr, barcodeScanner) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.connect = connect;
+        this.loadingCtrl = loadingCtrl;
+        this.zone = zone;
+        this.alertCtrl = alertCtrl;
+        this.cdr = cdr;
+        this.barcodeScanner = barcodeScanner;
+        this.orderno = '';
+        this.thissku = '';
+        this.thisname = '';
+        this.thisqty = '';
+        this.barsku = '';
+        this.allgood = 0;
+        this.orderno = this.navParams.get("orderno");
+        this.pstatus = 0;
+        this.prodlist = [];
+        this.barsku = '';
+        this.allgood = 0;
+    }
+    PickerPage.prototype.ionViewDidLoad = function () {
+        var _this = this;
+        var that = this;
+        var loader = this.loadingCtrl.create({
+            content: "Loading..."
+        });
+        loader.present();
+        var url = 'pickdetails.php?id=' + this.orderno;
+        this.connect.getList(url).subscribe(function (data) {
+            loader.dismiss();
+            that.zone.run(function () {
+                that.prodlist = data;
+            });
+        }, function (err) {
+            loader.dismiss();
+            _this.connect.logError(err);
+        });
+    };
+    PickerPage.prototype.lookup = function () {
+        this.findProd(this.barsku);
+    };
+    PickerPage.prototype.scanBar = function () {
+        var _this = this;
+        this.barcodeScanner.scan().then(function (barcodeData) {
+            if (!barcodeData.cancelled) {
+                _this.findProd(barcodeData.text);
+            }
+        }, function (err) {
+        });
+    };
+    PickerPage.prototype.findProd = function (s) {
+        var _this = this;
+        var that = this;
+        var loader = this.loadingCtrl.create({
+            content: "Searching..."
+        });
+        loader.present();
+        var url = 'spitem.php?code=' + s;
+        this.connect.getList(url).subscribe(function (data) {
+            loader.dismiss();
+            that.zone.run(function () {
+                if (data.result > 0) {
+                    var found = 0;
+                    for (var i in that.prodlist) {
+                        if (that.prodlist[i].id == data.id) {
+                            that.thissku = data.SKU;
+                            that.thisname = data.name;
+                            that.thisid = data.id;
+                            that.barsku = '';
+                            that.thisqty = '';
+                            that.pstatus = 1;
+                            found = 1;
+                        }
+                    }
+                    if (found == 0)
+                        alert('Product does not belong on this order');
+                }
+            });
+        }, function (err) {
+            loader.dismiss();
+            _this.connect.logError(err);
+        });
+    };
+    PickerPage.prototype.cancelit = function () {
+        this.pstatus = 0;
+    };
+    PickerPage.prototype.saveit = function () {
+        var _this = this;
+        var that = this;
+        var q = 1;
+        var ag = 1;
+        if (this.thisqty.length)
+            q = parseInt(this.thisqty);
+        that.zone.run(function () {
+            for (var i in that.prodlist) {
+                if (that.prodlist[i].id == that.thisid)
+                    that.prodlist[i].counted += q;
+                if (that.prodlist[i].counted == that.prodlist[i].expected)
+                    that.prodlist[i].backcolor = 'lightgreen';
+                else {
+                    that.prodlist[i].backcolor = 'khaki';
+                    ag = 0;
+                }
+            }
+            _this.allgood = ag;
+            _this.pstatus = 0;
+        });
+    };
+    PickerPage.prototype.kin = function (a) {
+        this.thisqty = '' + this.thisqty + a;
+    };
+    PickerPage.prototype.allcomplete = function () {
+        var _this = this;
+        var that = this;
+        var loader = this.loadingCtrl.create({
+            content: "Saving..."
+        });
+        loader.present();
+        var url = 'pickcomplete.php?id=' + this.orderno;
+        this.connect.getList(url).subscribe(function (data) {
+            loader.dismiss();
+            that.zone.run(function () {
+                that.navCtrl.pop();
+            });
+        }, function (err) {
+            loader.dismiss();
+            _this.connect.logError(err);
+        });
+    };
+    return PickerPage;
+}());
+PickerPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        selector: 'page-picker',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/picker/picker.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Order {{ orderno }}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n\n<div *ngIf="pstatus==0">\n<ion-list>\n <ion-item text-center *ngIf="allgood==1" block color="secondary" (click)="allcomplete()">\n   COMPLETE\n </ion-item>\n <ion-item>\n    <ion-label stacked>Next Item</ion-label>\n    <ion-input type="text" [(ngModel)]="barsku"></ion-input>\n  </ion-item>\n <ion-item block color="primary" style="margin-top:10px!important; margin-bottom:10px!important">\n  <button ion-button block color="primary" (click)="lookup()">Look-Up</button>\n </ion-item>\n <ion-item block color="primary">\n  <button ion-button block color="primary" (click)="scanBar()">Scan Barcode</button>\n </ion-item>\n</ion-list>\n<ion-list  *ngFor="let p of prodlist" >\n  			<ion-item [style.background]=p.backcolor>\n		<h4>{{ p.counted }}X {{p.sku }} </h4>\n              <div>{{ p.name }}</div>			\n			</ion-item>\n</ion-list>\n</div>\n<div *ngIf="pstatus==1">\n   <ion-list>\n <ion-item>\n    <ion-label stacked>SKU</ion-label>\n    <ion-input type="text" [(ngModel)]="thissku" readonly></ion-input>\n  </ion-item>\n <ion-item>\n    <ion-label stacked>Description</ion-label>\n    <ion-input type="text" [(ngModel)]="thisname" readonly></ion-input>\n  </ion-item>\n <ion-item>\n    <ion-label stacked>Quantity</ion-label>\n    <ion-input type="text" [(ngModel)]="thisqty"></ion-input>\n  </ion-item>\n </ion-list>\n <ion-grid>\n <ion-row style="margin-bottom:5px">\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(1)"> 1 </ion-item></ion-col>\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(2)"> 2 </ion-item></ion-col>\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(3)"> 3 </ion-item></ion-col>\n </ion-row>\n <ion-row style="margin-bottom:5px">\n <ion-col col-4><ion-item  style="background-color:lightskyblue" text-center (click)="kin(4)"> 4 </ion-item></ion-col>\n <ion-col col-4><ion-item  style="background-color:lightskyblue" text-center (click)="kin(5)"> 5 </ion-item></ion-col>\n <ion-col col-4><ion-item  style="background-color:lightskyblue" text-center (click)="kin(6)"> 6 </ion-item></ion-col>\n </ion-row>\n <ion-row style="margin-bottom:5px">\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(7)"> 7 </ion-item></ion-col>\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(8)"> 8 </ion-item></ion-col>\n <ion-col col-4><ion-item style="background-color:lightskyblue" text-center (click)="kin(9)"> 9 </ion-item></ion-col>\n </ion-row>\n\n <ion-row>\n <ion-col col-4><ion-item  style="background-color:tomato" text-center (click)="cancelit()"> CANCEL </ion-item></ion-col>\n <ion-col col-4><ion-item  style="background-color:lightskyblue" text-center (click)="kin(0)"> 0 </ion-item></ion-col>\n <ion-col col-4><ion-item  style="background-color:lightgreen" text-center (click)="saveit()"> SAVE </ion-item></ion-col>\n </ion-row>\n </ion-grid>\n\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/picker/picker.html"*/,
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
+], PickerPage);
+
+//# sourceMappingURL=picker.js.map
+
+/***/ }),
+
+/***/ 200:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StockPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stockp_stockp__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stockp_stockp__ = __webpack_require__(201);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -269,15 +442,15 @@ StockPage = __decorate([
 
 /***/ }),
 
-/***/ 200:
+/***/ 201:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StockpPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -383,15 +556,15 @@ StockpPage = __decorate([
 
 /***/ }),
 
-/***/ 201:
+/***/ 202:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -526,7 +699,7 @@ HomePage = __decorate([
 
 /***/ }),
 
-/***/ 202:
+/***/ 203:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -534,8 +707,8 @@ HomePage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_connect__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_connect__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -657,13 +830,13 @@ PhotosPage = __decorate([
 
 /***/ }),
 
-/***/ 203:
+/***/ 204:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(223);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -671,34 +844,36 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 222:
+/***/ 223:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_http__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(270);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_menu_menu__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_pick_pick__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_stock_stock__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_stockp_stockp__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_photos_photos__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_connect__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_stock_stock__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_stockp_stockp__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_photos_photos__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_picker_picker__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__providers_connect__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -729,6 +904,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_13__pages_stock_stock__["a" /* StockPage */],
             __WEBPACK_IMPORTED_MODULE_14__pages_stockp_stockp__["a" /* StockpPage */],
             __WEBPACK_IMPORTED_MODULE_12__pages_pick_pick__["a" /* PickPage */],
+            __WEBPACK_IMPORTED_MODULE_16__pages_picker_picker__["a" /* PickerPage */],
             __WEBPACK_IMPORTED_MODULE_15__pages_photos_photos__["a" /* PhotosPage */],
             __WEBPACK_IMPORTED_MODULE_11__pages_menu_menu__["a" /* MenuPage */]
         ],
@@ -744,6 +920,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_12__pages_pick_pick__["a" /* PickPage */],
             __WEBPACK_IMPORTED_MODULE_13__pages_stock_stock__["a" /* StockPage */],
             __WEBPACK_IMPORTED_MODULE_14__pages_stockp_stockp__["a" /* StockpPage */],
+            __WEBPACK_IMPORTED_MODULE_16__pages_picker_picker__["a" /* PickerPage */],
             __WEBPACK_IMPORTED_MODULE_15__pages_photos_photos__["a" /* PhotosPage */],
             __WEBPACK_IMPORTED_MODULE_11__pages_menu_menu__["a" /* MenuPage */]
         ],
@@ -753,7 +930,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__["a" /* BarcodeScanner */],
             __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__["a" /* Camera */],
             __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__["a" /* FileTransfer */],
-            __WEBPACK_IMPORTED_MODULE_16__providers_connect__["a" /* Connect */],
+            __WEBPACK_IMPORTED_MODULE_17__providers_connect__["a" /* Connect */],
             { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] }
         ]
     })
@@ -763,13 +940,13 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 270:
+/***/ 271:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(191);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_menu_menu__ = __webpack_require__(197);
@@ -809,13 +986,13 @@ MyApp = __decorate([
 
 /***/ }),
 
-/***/ 31:
+/***/ 28:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Connect; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_http__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -858,5 +1035,5 @@ Connect = __decorate([
 
 /***/ })
 
-},[203]);
+},[204]);
 //# sourceMappingURL=main.js.map
