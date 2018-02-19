@@ -107,6 +107,7 @@ MenuPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__picker_picker__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_barcode_scanner__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -120,13 +121,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var PickPage = (function () {
-    function PickPage(navCtrl, navParams, connect, zone, cdr) {
+    function PickPage(navCtrl, navParams, connect, zone, cdr, barcodeScanner) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.connect = connect;
         this.zone = zone;
         this.cdr = cdr;
+        this.barcodeScanner = barcodeScanner;
         this.company = 0;
         this.companies = [];
         this.orders = [];
@@ -168,13 +171,22 @@ var PickPage = (function () {
     PickPage.prototype.goOrd = function (o) {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__picker_picker__["a" /* PickerPage */], { 'orderno': o.id });
     };
+    PickPage.prototype.scanBar = function () {
+        var _this = this;
+        this.barcodeScanner.scan().then(function (barcodeData) {
+            if (!barcodeData.cancelled) {
+                _this.goOrd(barcodeData.text);
+            }
+        }, function (err) {
+        });
+    };
     return PickPage;
 }());
 PickPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-pick',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/pick/pick.html"*/'<!--\n  Generated template for the StockPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Scan Pick</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div *ngIf="company ==0">\n<ion-row>\n<ion-col col-12 text-center>\n<h2>Select Company</h2>\n</ion-col>\n</ion-row>\n\n\n		<ion-list no-lines text-wrap >\n			<ion-item *ngFor="let c of companies"  class="borderBottomGainsboroAlpha">\n<button ion-button (click)="goComp(c)" block color="primary">{{ c.name }}</button>\n			</ion-item>\n		</ion-list>\n</div>\n<div *ngIf="company > 0">\n<ion-row>\n<ion-col col-12 text-center>\n<h3>{{ companyname }}</h3>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n		<ion-list no-lines text-wrap >\n			<ion-item *ngFor="let o of orders"  class="borderBottomGainsboroAlpha">\n<button ion-button style="height:60px" (click)="goOrd(o)" block color="primary" text-wrap><h3>[{{ o.id }}] {{ o.name }}</h3></button>\n			</ion-item>\n		</ion-list>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/pick/pick.html"*/,
+        selector: 'page-pick',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/pick/pick.html"*/'<!--\n  Generated template for the StockPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Scan Pick</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div *ngIf="company ==0">\n<ion-item>\n<button ion-button full color="primary" (click)="scanBar()">Scan Order #</button>\n</ion-item>\n<ion-row>\n<ion-col col-12 text-center>\n<h2>Select Company</h2>\n</ion-col>\n</ion-row>\n\n\n		<ion-list no-lines text-wrap >\n			<ion-item *ngFor="let c of companies"  class="borderBottomGainsboroAlpha">\n<button ion-button (click)="goComp(c)" block color="primary">{{ c.name }}</button>\n			</ion-item>\n		</ion-list>\n</div>\n<div *ngIf="company > 0">\n<ion-row>\n<ion-col col-12 text-center>\n<h3>{{ companyname }}</h3>\n<button ion-button color="danger" block (click)="goBack()">Go Back</button>\n</ion-col>\n</ion-row>\n		<ion-list no-lines text-wrap >\n			<ion-item *ngFor="let o of orders"  class="borderBottomGainsboroAlpha">\n<button ion-button style="height:60px" (click)="goOrd(o)" block color="primary" text-wrap><h3>[{{ o.id }}] {{ o.name }}</h3></button>\n			</ion-item>\n		</ion-list>\n</div>\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/pick/pick.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
 ], PickPage);
 
 //# sourceMappingURL=pick.js.map
@@ -189,7 +201,7 @@ PickPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -450,7 +462,7 @@ StockPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -564,7 +576,7 @@ StockpPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_barcode_scanner__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -857,7 +869,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_http__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_home_home__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_menu_menu__ = __webpack_require__(197);
