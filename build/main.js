@@ -903,7 +903,7 @@ var ShowroomPage = (function () {
     };
     ShowroomPage.prototype.uploadImage = function (imagePath) {
         // Destination URL
-        var url = this.connect.getServerUrl() + 'uploadmisc.php';
+        var url = this.connect.getServerUrl2() + 'uploadmisc.php';
         // File for Upload
         var targetPath = imagePath;
         // File name only
@@ -923,10 +923,9 @@ var ShowroomPage = (function () {
         loader.present();
         // Use the FileTransfer to upload the image
         fileTransfer.upload(targetPath, encodeURI(url), options, true).then(function (data) {
-            alert(data.response);
             var n = JSON.parse(data.response).num;
             loader.dismiss();
-            alert(n);
+            alert('MISC' + n);
         }, function (err) {
             loader.dismiss();
             alert('Error');
@@ -1086,6 +1085,7 @@ var Connect = (function () {
     function Connect(http) {
         this.http = http;
         this.server_url = 'http://theparcelpeople.com.au/catalogue/server/';
+        this.server_url2 = 'http://theparcelpeople.com.au/catalogue/';
     }
     Connect.prototype.PostQuery = function (object, parameter) {
         return this.http.get(this.server_url + object + parameter).map(function (res) { return res.json(); });
@@ -1093,11 +1093,17 @@ var Connect = (function () {
     Connect.prototype.getList = function (object) {
         return this.http.get(this.server_url + object).map(function (res) { return res.json(); });
     };
+    Connect.prototype.getList2 = function (object) {
+        return this.http.get(this.server_url2 + object).map(function (res) { return res.json(); });
+    };
     Connect.prototype.logError = function (err) {
         console.error('Error: ' + err);
     };
     Connect.prototype.getServerUrl = function () {
         return this.server_url;
+    };
+    Connect.prototype.getServerUrl2 = function () {
+        return this.server_url2;
     };
     return Connect;
 }());
