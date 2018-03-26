@@ -87,6 +87,8 @@
     </plugin>
   <plugin name="cordova-plugin-file-transfer" spec="^1.6.3" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
-    <engine name="android" spec="~7.0.0" />
+   <plugin name="cordova-android-support-gradle-release" source="npm">
+        <variable name="ANDROID_SUPPORT_VERSION" value="26.+" />
+    </plugin>
 
 </widget>
