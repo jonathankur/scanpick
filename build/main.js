@@ -1058,7 +1058,7 @@ var ItemPage = (function () {
             fileName: filename,
             chunkedMode: false,
             mimeType: "multipart/form-data",
-            params: { itemid: this.itemid }
+            params: { value1: this.itemid }
         };
         var that = this;
         var fileTransfer = this.transfer.create();
