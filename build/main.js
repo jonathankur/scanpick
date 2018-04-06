@@ -725,8 +725,8 @@ HomePage = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PhotosPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_connect__ = __webpack_require__(21);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -859,8 +859,8 @@ PhotosPage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShowroomPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_file_transfer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_camera__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_file_transfer__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_connect__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_barcode_scanner__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__item_item__ = __webpack_require__(205);
@@ -923,7 +923,6 @@ var ShowroomPage = (function () {
             mimeType: "multipart/form-data",
             params: {}
         };
-        var that = this;
         var fileTransfer = this.transfer.create();
         var loader = this.loadingCtrl.create({
             content: 'Uploading...',
@@ -975,7 +974,9 @@ ShowroomPage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ItemPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_connect__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_connect__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -988,6 +989,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 /**
  * Generated class for the ItemPage page.
  *
@@ -995,7 +998,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var ItemPage = (function () {
-    function ItemPage(navCtrl, navParams, connect, loadingCtrl, zone, alertCtrl, cdr) {
+    function ItemPage(navCtrl, navParams, connect, loadingCtrl, zone, alertCtrl, cdr, camera, transfer) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.connect = connect;
@@ -1003,6 +1006,8 @@ var ItemPage = (function () {
         this.zone = zone;
         this.alertCtrl = alertCtrl;
         this.cdr = cdr;
+        this.camera = camera;
+        this.transfer = transfer;
         this.itemcode = "";
         this.itemdesc = "";
         this.itemprice = "";
@@ -1018,7 +1023,7 @@ var ItemPage = (function () {
             content: "Loading..."
         });
         loader.present();
-        var url = 'itemdetails.php?code=' + this.itemcode;
+        var url = 'showitemdetails.php?code=' + this.itemcode;
         this.connect.getList(url).subscribe(function (data) {
             loader.dismiss();
             that.zone.run(function () {
@@ -1026,6 +1031,7 @@ var ItemPage = (function () {
                 that.itemprice = data.itemprice;
                 that.itempic = data.itempic;
                 that.itemid = data.itemid;
+                that.cdr.markForCheck();
             });
         }, function (err) {
             loader.dismiss();
@@ -1033,15 +1039,51 @@ var ItemPage = (function () {
             _this.connect.logError(err);
         });
     };
+    ItemPage.prototype.retake = function () {
+        var _this = this;
+        this.camera.getPicture({ quality: 80, targetWidth: 800, targetHeight: 1000, cameraDirection: 0, correctOrientation: true, destinationType: 1, allowEdit: false }).then(function (imagePath) {
+            _this.zone.run(function () { _this.uploadImage(imagePath); });
+        }, function (err) {
+        });
+    };
+    ItemPage.prototype.uploadImage = function (imagePath) {
+        // Destination URL
+        var url = this.connect.getServerUrl2() + 'showupload.php';
+        // File for Upload
+        var targetPath = imagePath;
+        // File name only
+        var filename = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "multipart/form-data",
+            params: { itemid: this.itemid }
+        };
+        var that = this;
+        var fileTransfer = this.transfer.create();
+        var loader = this.loadingCtrl.create({
+            content: 'Uploading...',
+        });
+        loader.present();
+        // Use the FileTransfer to upload the image
+        fileTransfer.upload(targetPath, encodeURI(url), options, true).then(function (data) {
+            that.itempic = JSON.parse(data.response).newpic;
+            loader.dismiss();
+        }, function (err) {
+            loader.dismiss();
+        });
+    };
     return ItemPage;
 }());
 ItemPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-item',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/item/item.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Showroom Item</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<ion-list>\n<ion-item>\n<ion-label stacked>Item Code</ion-label>\n<div>{{ itemcode }}</div>\n</ion-item>\n\n<ion-item>\n<ion-label stacked>Description</ion-label>\n<div>{{ itemdesc }}</div>\n</ion-item>\n\n<ion-item>\n<ion-label stacked>Price</ion-label>\n<div>{{ itemprice }}</div>\n</ion-item>\n\n<ion-item>\n<ion-label stacked>Image</ion-label>\n<img [src]="itempic">\n</ion-item>\n\n</ion-list>\n\n\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/item/item.html"*/,
+        selector: 'page-item',template:/*ion-inline-start:"/var/www/html/ionic/scanpick/src/pages/item/item.html"*/'<ion-header>\n\n  <ion-navbar>\n    <ion-title>Showroom Item</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<ion-list>\n<ion-item>\n<ion-label stacked>Item Code</ion-label>\n<ion-input text [(ngModel)]="itemcode"></ion-input>\n</ion-item>\n\n<ion-item>\n<ion-label stacked>Description</ion-label>\n<ion-input text [(ngModel)]="itemdesc"></ion-input>\n</ion-item>\n\n<ion-item>\n<ion-label stacked>Price</ion-label>\n<ion-input text [(ngModel)]="itemprice"></ion-input>\n</ion-item>\n<ion-item>\n<button ion-button color="primary" block (click)="retake()">Update Picture</button>\n\n</ion-item>\n<ion-item>\n<img [src]="itempic" style="border:1px solid gainsboro">\n</ion-item>\n\n</ion-list>\n\n\n</ion-content>\n'/*ion-inline-end:"/var/www/html/ionic/scanpick/src/pages/item/item.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_connect__["a" /* Connect */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__providers_connect__["a" /* Connect */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_connect__["a" /* Connect */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["P" /* NgZone */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__["a" /* Camera */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ionic_native_camera__["a" /* Camera */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__["a" /* FileTransfer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_file_transfer__["a" /* FileTransfer */]) === "function" && _j || Object])
 ], ItemPage);
 
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=item.js.map
 
 /***/ }),
@@ -1126,8 +1168,8 @@ Connect = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(193);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_file_transfer__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_http__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_barcode_scanner__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_component__ = __webpack_require__(273);
