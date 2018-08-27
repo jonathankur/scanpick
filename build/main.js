@@ -559,6 +559,7 @@ var StockpPage = (function () {
         });
         loader.present();
         var url = 'completeso.php?id=' + this.orderno + '&items=' + JSON.stringify(this.prodlist);
+        alert(url);
         this.connect.getList(url).subscribe(function (data) {
             loader.dismiss();
             that.zone.run(function () {
