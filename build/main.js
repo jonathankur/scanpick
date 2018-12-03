@@ -146,8 +146,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var Connect = (function () {
     function Connect(http) {
         this.http = http;
-        this.server_url = 'http://theparcelpeople.com.au/catalogue/server/';
-        this.server_url2 = 'http://theparcelpeople.com.au/catalogue/';
+        this.server_url = 'https://theparcelpeople.com.au/catalogue/server/';
+        this.server_url2 = 'https://theparcelpeople.com.au/catalogue/';
     }
     Connect.prototype.PostQuery = function (object, parameter) {
         return this.http.get(this.server_url + object + parameter).map(function (res) { return res.json(); });
@@ -1007,7 +1007,7 @@ var PhotosPage = (function () {
         this.zone.run(function () {
             for (var p in _this.phlist)
                 if (_this.phlist[p].id != a)
-                    nw.push({ id: _this.phlist[p].id, pic: 'http://theparcelpeople.com.au/catalogue/server/photos/p' + _this.phlist[p].id + '.jpg' });
+                    nw.push({ id: _this.phlist[p].id, pic: 'https://theparcelpeople.com.au/catalogue/server/photos/p' + _this.phlist[p].id + '.jpg' });
             _this.phlist = nw;
             console.log(_this.phlist);
             _this.cdr.markForCheck();
@@ -1036,7 +1036,7 @@ var PhotosPage = (function () {
         // Use the FileTransfer to upload the image
         fileTransfer.upload(targetPath, encodeURI(url), options, true).then(function (data) {
             var n = JSON.parse(data.response).num;
-            that.phlist.push({ id: n, pic: 'http://theparcelpeople.com.au/catalogue/server/photos/p' + n + '.jpg' });
+            that.phlist.push({ id: n, pic: 'https://theparcelpeople.com.au/catalogue/server/photos/p' + n + '.jpg' });
             loader.dismiss();
         }, function (err) {
             loader.dismiss();
